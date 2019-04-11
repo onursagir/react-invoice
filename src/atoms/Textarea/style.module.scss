@@ -1,0 +1,24 @@
+.textarea {
+    border: none; 
+    resize: none;
+    outline: none;
+    transition: all 100ms;
+
+    &:hover, &:focus {
+        border-bottom: 3px solid #000;
+    }
+}
+
+.large {
+    font-size: 3em;
+    
+    &:hover, &:focus {
+        border-bottom: 5px solid #000;
+    }
+}
+
+.address {
+    &:first-line {
+        font-weight: bold;
+    }
+}
