@@ -6,11 +6,11 @@ const Input = ({ type, className, ...props }) => {
   const classNames = [input, className].filter(Boolean).join(' ');
 
   if (typeof type === 'string') {
-    return (<input type={type} className={classNames} />);
+    return (<input type={type} className={classNames} {...props} />);
   }
 
   const Type = type;
-  return <Type {...props} className={classNames} />;
+  return <Type className={classNames} {...props} />;
 };
 
 Input.propTypes = {
