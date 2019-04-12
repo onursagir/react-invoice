@@ -1,0 +1,20 @@
+body {
+    background: red;
+}
+
+@media print {
+    @for $i from 1 through 12 {
+        .col-lg-#{$i} {
+            width: 100% !important;
+            padding-right: 15px;
+            padding-left: 15px;
+            flex: 0 0 percentage($i / 12) !important;
+            max-width: percentage($i / 12) !important;
+        }
+        
+        .offset-lg-#{$i} {
+            $num: $i / 12;
+            margin-left: if($num == 0, 0, percentage($num)) !important;
+        }
+    }
+}
