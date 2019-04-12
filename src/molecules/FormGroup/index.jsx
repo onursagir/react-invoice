@@ -7,10 +7,10 @@ const FormGroup = ({ text, children }) => {
 
   return (
     <label className="form-group row" htmlFor={id}>
-      <div className="col-lg-2 col-form-label">
+      <div className="col-lg-4 col-form-label">
         {text}
       </div>
-      <div className="col-lg-10">
+      <div className="col-lg-8">
         {React.Children.map(children, child => (
           <child.type
             {...child.props}

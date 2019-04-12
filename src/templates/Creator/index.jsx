@@ -22,7 +22,6 @@ const Creator = () => {
 
   const onFieldChange = ({ target }) => setFields({ ...fields, [target.name]: target.value });
 
-  console.log(fields, setFields);
   return (
     <div className="row">
       <div className="col-lg-5">
@@ -46,7 +45,7 @@ const Creator = () => {
           <Input name="invoiceDate" onChange={onFieldChange} value={fields.invoiceDate} className="text-right" />
         </FormGroup>
         <FormGroup text="Vervaldatum">
-          <Input name="dueDate" onChange={onFieldChange} value={fields.dueDate} className="text-right" />
+          <Input name="dueDate" onChange={onFieldChange} value={fields.dueDate} className="text-right mb-5" />
         </FormGroup>
       </div>
       <div className="offset-lg-2 col-lg-5">

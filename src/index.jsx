@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Invoice from './components/Invoice';
+import { Create } from '@pages';
 import 'bootstrap/scss/bootstrap.scss';
 
-ReactDOM.render(<Invoice />, document.getElementById('root'));
+ReactDOM.render(<Create />, document.getElementById('root'));
