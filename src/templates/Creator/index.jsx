@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { Textarea, Input } from '@atoms';
-import { FormGroup } from '@molecules';
+import { FormGroup, RowTable } from '@molecules';
 
 const Creator = () => (
   <div className="row">
@@ -42,6 +42,9 @@ const Creator = () => (
       <FormGroup text="BTW">
         <Input value="123456780001" className="text-right" />
       </FormGroup>
+    </div>
+    <div className="col-lg-12">
+      <RowTable />
     </div>
   </div>
 );
