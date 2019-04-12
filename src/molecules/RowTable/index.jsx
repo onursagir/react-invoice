@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Input } from '@atoms';
 import NumberFormat from 'react-number-format';
 import Decimal from 'decimal.js';
+import shortId from 'shortid';
+import { noBorder } from './style.module.scss';
 
 const InvoiceRow = ({
   id, quantity, desc, price, vat, total, onChange,
@@ -52,7 +54,10 @@ const initialRow = {
 };
 
 const RowTable = () => {
+  const [vat, setVat] = useState({ 21: 21 });
   const [rows, setRows] = useState([initialRow]);
+  const [total, setTotal] = useState(121);
+  const [subtotal, setSubtotal] = useState(100);
 
   const onColumnChange = (id, field, value) => {
     const values = rows.reduce((acc, r) => {
@@ -62,32 +67,41 @@ const RowTable = () => {
         row[field] = value;
       }
 
-      const vat = new Decimal(acc.vat[row.vat] || 0);
-      const total = new Decimal(acc.total || 0);
-      const subtotal = new Decimal(acc.subtotal || 0);
+      const invoiceVat = new Decimal(acc.vat[row.vat] || 0);
+      const invoiceTotal = new Decimal(acc.total || 0);
+      const invoiceSubtotal = new Decimal(acc.subtotal || 0);
 
-      const rowVat = new Decimal(row.vat);
-      const rowPrice = new Decimal(row.price);
-      const rowQuantity = new Decimal(row.quantity);
+      const rowVat = new Decimal(row.vat || 0);
+      const rowPrice = new Decimal(row.price || 0);
+      const rowQuantity = new Decimal(row.quantity || 0);
       const rowTotal = rowQuantity.times(rowPrice).times(rowVat.dividedBy(100).add(1));
 
       return {
         vat: {
           ...acc.vat,
-          [row.vat]: vat
+          [row.vat]: invoiceVat
             .add(rowPrice.times(row.quantity).times(rowVat.dividedBy(100)))
             .toDP(2)
             .toFixed(2),
         },
         rows: [...acc.rows, { ...row, total: rowTotal.toDP(2).toFixed(2) }],
-        total: total.add(rowTotal).toDP(2).toFixed(2),
-        subtotal: subtotal.add(rowPrice.times(rowQuantity)).toDP(2).toFixed(2),
+        total: invoiceTotal.add(rowTotal).toDP(2).toFixed(2),
+        subtotal: invoiceSubtotal.add(rowPrice.times(rowQuantity)).toDP(2).toFixed(2),
       };
     }, {
       vat: {}, rows: [], total: 0, subtotal: 0,
     });
 
+    // console.key(values);
+    setVat(values.vat);
     setRows(values.rows);
+    setTotal(values.total);
+    setSubtotal(values.subtotal);
+  };
+
+
+  const onAddClick = () => {
+    setRows([...rows, { ...initialRow, id: shortId.generate() }]);
   };
 
   return (
@@ -109,7 +123,53 @@ const RowTable = () => {
             {...row}
           />
         ))}
+        <tr>
+          <td colSpan="5">
+            <button
+              type="button"
+              onClick={onAddClick}
+              className="btn btn-dark float-right"
+            >
+            Nieuwe regel
+            </button>
+          </td>
+        </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colSpan="3" className={noBorder} />
+          <td>
+            Subtotaal
+          </td>
+          <td>
+            €
+            {subtotal}
+          </td>
+        </tr>
+        {Object.keys(vat).map(vatRate => (
+          <tr key={shortId.generate()}>
+            <td colSpan="3" className={noBorder} />
+            <td>
+              {vatRate}
+              %
+            </td>
+            <td>
+              €
+              {vat[vatRate]}
+            </td>
+          </tr>
+        ))}
+        <tr>
+          <td colSpan="3" className={noBorder} />
+          <td>
+            Totaal
+          </td>
+          <td>
+            €
+            {total}
+          </td>
+        </tr>
+      </tfoot>
     </table>
   );
 };
