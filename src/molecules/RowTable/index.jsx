@@ -123,7 +123,7 @@ const RowTable = () => {
             {...row}
           />
         ))}
-        <tr>
+        <tr className="d-print-none">
           <td colSpan="5">
             <button
               type="button"
